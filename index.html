@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI TTS Web App</title>
 <style>
-body { font-family: sans-serif; padding: 2rem; max-width: 600px; margin: auto; }
-textarea { width: 100%; height: 150px; margin-bottom: 1rem; }
-button { margin-right: 1rem; padding: 0.5rem 1rem; }
-audio { display: block; margin-top: 1rem; width: 100%; }
+  body { font-family: sans-serif; padding: 2rem; max-width: 600px; margin: auto; }
+  textarea { width: 100%; height: 150px; margin-bottom: 1rem; }
+  button { margin-right: 1rem; padding: 0.5rem 1rem; }
+  audio { display: block; margin-top: 1rem; width: 100%; }
 </style>
 </head>
 <body>
@@ -19,62 +19,10 @@ audio { display: block; margin-top: 1rem; width: 100%; }
 <br>
 <button id="speakBtn">Speak</button>
 <button id="stopBtn">Stop</button>
-<button id="downloadBtn" disabled>Download</button>
+<a id="downloadLink" style="display:none;">Download</a>
 
 <audio id="audioPlayer" controls></audio>
 
-<script>
-const speakBtn = document.getElementById('speakBtn');
-const stopBtn = document.getElementById('stopBtn');
-const downloadBtn = document.getElementById('downloadBtn');
-const audioPlayer = document.getElementById('audioPlayer');
-const textInput = document.getElementById('textInput');
-
-let currentBlobUrl = null;
-
-async function generateSpeech() {
-  const text = textInput.value.trim();
-  if (!text) return alert('Please enter some text.');
-
-  speakBtn.disabled = true;
-  downloadBtn.disabled = true;
-
-  try {
-    const response = await fetch('https://book2voice.vercel.app/api/tts', {  // <-- Your serverless proxy URL
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text })
-    });
-
-    if (!response.ok) throw new Error('Server error');
-
-    const audioData = await response.arrayBuffer();
-    const blob = new Blob([audioData], { type: 'audio/mpeg' });
-
-    if (currentBlobUrl) URL.revokeObjectURL(currentBlobUrl);
-    currentBlobUrl = URL.createObjectURL(blob);
-
-    audioPlayer.src = currentBlobUrl;
-    audioPlayer.play();
-
-    downloadBtn.href = currentBlobUrl;
-    downloadBtn.download = 'tts.mp3';
-    downloadBtn.disabled = false;
-
-  } catch (err) {
-    alert(err.message);
-  } finally {
-    speakBtn.disabled = false;
-  }
-}
-
-speakBtn.addEventListener('click', generateSpeech);
-
-stopBtn.addEventListener('click', () => {
-  audioPlayer.pause();
-  audioPlayer.currentTime = 0;
-});
-</script>
-
+<script src="tts.js"></script>
 </body>
 </html>
