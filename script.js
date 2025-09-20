@@ -6,8 +6,8 @@ const downloadLink = document.getElementById('downloadLink');
 
 let currentBlobUrl = null;
 
-const ELEVENLABS_API_KEY = 'YOUR_API_KEY_HERE'; // <-- replace with your key
-const VOICE_ID = 'YOUR_VOICE_ID_HERE'; // <-- replace with your chosen voice ID
+const ELEVENLABS_API_KEY = 'bba42ab814d41f65a15ab62c7797654bbd948497fe47991c2c5b848ba7d28094'; // <-- replace with your key
+const VOICE_ID = 'zA6D7RyKdc2EClouEMkP'; // <-- replace with your chosen voice ID
 
 async function generateSpeech() {
   const text = textInput.value.trim();
